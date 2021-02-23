@@ -14,9 +14,18 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('app', () => {
+    it('should return hello message', () => {
+      expect(appController.getHello()).toBe('Serve HaRa');
+    });
+
+    it('should be return length of context', () => {
+      const sentence = 'Lovely Front End Developer and  Mixologist';
+      expect(appController.getCountWord({ sentence })).toStrictEqual({
+        length: 42,
+        excepBlanktLength: 36,
+        countWord: 6,
+      });
     });
   });
 });
