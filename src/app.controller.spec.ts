@@ -21,10 +21,19 @@ describe('AppController', () => {
 
     it('should be return length of context', () => {
       const sentence = 'Lovely Front End Developer and  Mixologist';
-      expect(appController.getCountWord({ sentence })).toStrictEqual({
+      expect(appController.countingWord({ sentence })).toStrictEqual({
         length: 42,
         excepBlanktLength: 36,
         countWord: 6,
+      });
+    });
+
+    it('should be return rgb code', () => {
+      const hexCode = '#3bc9db';
+      expect(appController.hexToRgb({ hexCode })).toStrictEqual({
+        red: 59,
+        green: 201,
+        blue: 219,
       });
     });
   });

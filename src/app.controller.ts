@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CountingWordDto } from './dto';
+import { CountingWordDto, HexToRgbDto } from './dto';
 
 @Controller('api')
 export class AppController {
@@ -12,16 +12,22 @@ export class AppController {
   }
 
   @Post('counting-word')
-  getCountWord(@Body() countingWordDto: CountingWordDto) {
+  countingWord(
+    @Body() countingWordDto: CountingWordDto,
+  ): {
+    length: number;
+    excepBlanktLength: number;
+    countWord: number;
+  } {
     const { sentence } = countingWordDto;
-    const length = sentence.length;
-    const excepBlanktLength = sentence.replace(/\s+/g, '').length;
-    const countWord = sentence.split(/\s+/g).length;
+    return this.appService.getCountWord(sentence);
+  }
 
-    return {
-      length,
-      excepBlanktLength,
-      countWord,
-    };
+  @Post('hex-to-rgb')
+  hexToRgb(
+    @Body() hexToRgb: HexToRgbDto,
+  ): { red: number; green: number; blue: number } {
+    const { hexCode } = hexToRgb;
+    return this.appService.convertHexToRgb(hexCode);
   }
 }
