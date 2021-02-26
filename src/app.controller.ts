@@ -28,6 +28,11 @@ export class AppController {
     @Body() hexToRgb: HexToRgbDto,
   ): { red: number; green: number; blue: number } {
     const { hexCode } = hexToRgb;
-    return this.appService.convertHexToRgb(hexCode);
+
+    try {
+      return this.appService.convertHexToRgb(hexCode);
+    } catch (error) {
+      throw error;
+    }
   }
 }
