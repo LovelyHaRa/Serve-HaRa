@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CountingWordDto, HexToRgbDto } from './dto';
 
 @Controller('api')
 export class AppController {
@@ -13,22 +12,31 @@ export class AppController {
 
   @Post('counting-word')
   countingWord(
-    @Body() countingWordDto: CountingWordDto,
+    @Req() request?,
   ): {
     length: number;
     excepBlanktLength: number;
     countWord: number;
   } {
-    const { sentence } = countingWordDto;
+    const { sentence } = request.body;
     return this.appService.getCountWord(sentence);
   }
 
   @Post('hex-to-rgb')
-  hexToRgb(
-    @Body() hexToRgb: HexToRgbDto,
-  ): { red: number; green: number; blue: number } {
-    const { hexCode } = hexToRgb;
+  hexToRgb(@Req() request?): { red: number; green: number; blue: number } {
+    const { hexCode } = request.body;
 
+    try {
+      return this.appService.convertHexToRgb(hexCode);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('hex-to-rgb')
+  getHexToRgb(
+    @Query('hexCode') hexCode?,
+  ): { red: number; green: number; blue: number } {
     try {
       return this.appService.convertHexToRgb(hexCode);
     } catch (error) {

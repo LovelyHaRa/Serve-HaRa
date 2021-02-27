@@ -23,7 +23,9 @@ describe('AppController', () => {
     describe('counting-word', () => {
       it('should be return length of context', () => {
         const sentence = 'Lovely Front End Developer and  Mixologist';
-        expect(appController.countingWord({ sentence })).toStrictEqual({
+        expect(
+          appController.countingWord({ body: { sentence } }),
+        ).toStrictEqual({
           length: 42,
           excepBlanktLength: 36,
           countWord: 6,
@@ -34,11 +36,17 @@ describe('AppController', () => {
     describe('hex-to-rgb', () => {
       it('should be return rgb code', () => {
         const hexCode = '#3bc9db';
-        expect(appController.hexToRgb({ hexCode })).toStrictEqual({
+        const result = {
           red: 59,
           green: 201,
           blue: 219,
-        });
+        };
+
+        expect(appController.hexToRgb({ body: { hexCode } })).toStrictEqual(
+          result,
+        );
+
+        expect(appController.getHexToRgb(hexCode)).toStrictEqual(result);
       });
 
       it('should be throw exception', () => {
@@ -53,7 +61,11 @@ describe('AppController', () => {
         ];
 
         invalidHexCode.forEach((hexCode) => {
-          expect(() => appController.hexToRgb({ hexCode })).toThrow(
+          expect(() => appController.hexToRgb({ body: { hexCode } })).toThrow(
+            HttpException,
+          );
+
+          expect(() => appController.getHexToRgb(hexCode)).toThrow(
             HttpException,
           );
         });
